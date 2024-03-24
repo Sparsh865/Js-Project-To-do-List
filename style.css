@@ -17,6 +17,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top:20px;
 }
 
 .input-container{
@@ -50,10 +51,10 @@ body{
 ul{
     width:100%;
     max-width:450px;
-    display: flex;
+    /* display: flex;
     justify-content: center;
     flex-direction: column;
-    align-items: center;
+    align-items: center; */
 }
 
 ul li{
