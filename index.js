@@ -40,6 +40,8 @@ const addTodo = () => {
 
         //Empty todo box after adding
         inputBox.value = "";
+
+        saveLocalTodos(inputText);
     }
 }
 
@@ -56,6 +58,54 @@ const updateTodo = (e) => {
     }
 }
 
+const saveLocalTodos = (todo) => {
+    let todos;
+    if (localStorage.getItem("todos") === null) {
+        todos = [];
+    }
+    else {
+        todos = JSON.parse(localStorage.getItem("todos"));
+    }
+    todos.push(todo);
+    localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+const getLocalTodos = () => {
+    let todos;
+    if (localStorage.getItem("todos") === null) {
+        todos = [];
+    }
+    else {
+        todos = JSON.parse(localStorage.getItem("todos"));
+        todos.forEach(todo => {
+            //Creating P tag
+            const li = document.createElement('li');
+            const p = document.createElement('p');
+            p.innerHTML = todo;
+            li.appendChild(p);
+
+            //Creating Edit Button
+            const editBtn = document.createElement('button');
+            editBtn.innerText = 'Edit';
+            editBtn.classList.add('btn', 'editBtn');
+            li.appendChild(editBtn);
+
+            //Creating Delete btn
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerText = 'Remove';
+            deleteBtn.classList.add('btn', 'deleteBtn')
+            li.appendChild(deleteBtn);
+
+            todoList.appendChild(li);
+        });
+    }
+}
+
+
+
+
+
+document.addEventListener('DOMContentLoaded',getLocalTodos);
 addBtn.addEventListener('click', addTodo);
 todoList.addEventListener('click', updateTodo);
 
