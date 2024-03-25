@@ -96,5 +96,9 @@ ul li p {
 }
 
 .editBtn {
-    color: green;
+    color: blue;
+}
+
+.doneBtn{
+    color:green
 }

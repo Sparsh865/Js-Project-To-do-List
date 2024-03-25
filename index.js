@@ -39,6 +39,12 @@ const addTodo = () => {
         deleteBtn.classList.add('btn', 'deleteBtn')
         li.appendChild(deleteBtn);
 
+        //Creating Done btn
+        const doneBtn = document.createElement('button');
+        doneBtn.innerText = 'Done';
+        doneBtn.classList.add('btn', 'doneBtn')
+        li.appendChild(doneBtn);
+
         //Empty todo box after adding
         inputBox.value = "";
 
@@ -46,17 +52,69 @@ const addTodo = () => {
     }
 }
 
+// const updateTodo = (e) => {
+//     if (e.target.innerHTML === 'Remove') {
+//         todoList.removeChild(e.target.parentElement);
+//         deleteLocalTodos(e.target.parentElement);
+//     }
+
+//     else if (e.target.innerHTML === 'Edit') {
+//         inputBox.value = e.target.previousElementSibling.innerHTML;
+//         inputBox.focus();
+//         addBtn.value = 'Edit';
+//         editTodo = e;
+//     }
+
+//     else if (e.target.innerHTML === 'Done') {
+//         const list = e.target.parentElement;
+//         const doneText = list.querySelector('p');
+//         doneText.style.textDecoration = 'line-through';
+//         // list.parentElement.appendChild(list);
+//         e.target.innerHTML = 'Undo';
+//     }
+//     else if (e.target.innerHTML === 'Undo') {
+//         const list = e.target.parentElement;
+//         const doneText = list.querySelector('p');
+//         doneText.style.textDecoration = ''; 
+//         e.target.innerHTML = 'Done'; 
+//     }
+// }
+
 const updateTodo = (e) => {
     if (e.target.innerHTML === 'Remove') {
         todoList.removeChild(e.target.parentElement);
         deleteLocalTodos(e.target.parentElement);
-    }
-
-    if (e.target.innerHTML === 'Edit') {
+    } else if (e.target.innerHTML === 'Edit') {
         inputBox.value = e.target.previousElementSibling.innerHTML;
         inputBox.focus();
         addBtn.value = 'Edit';
         editTodo = e;
+    } else if (e.target.innerHTML === 'Done') {
+        const list = e.target.parentElement;
+        const doneText = list.querySelector('p');
+        doneText.style.textDecoration = 'line-through';
+        e.target.innerHTML = 'Undo';
+
+        // Update local storage
+        const todos = JSON.parse(localStorage.getItem("todos"));
+        const todoIndex = todos.findIndex(todo => todo === doneText.innerHTML);
+        if (todoIndex !== -1) {
+            todos[todoIndex] = `<s>${doneText.innerHTML}</s>`; // Add line-through HTML tags
+            localStorage.setItem("todos", JSON.stringify(todos));
+        }
+    } else if (e.target.innerHTML === 'Undo') {
+        const list = e.target.parentElement;
+        const doneText = list.querySelector('p');
+        doneText.style.textDecoration = '';
+        e.target.innerHTML = 'Done';
+
+        // Update local storage
+        const todos = JSON.parse(localStorage.getItem("todos"));
+        const todoIndex = todos.findIndex(todo => todo === `<s>${doneText.innerHTML}</s>`);
+        if (todoIndex !== -1) {
+            todos[todoIndex] = doneText.innerHTML; // Remove line-through HTML tags
+            localStorage.setItem("todos", JSON.stringify(todos));
+        }
     }
 }
 
@@ -98,6 +156,11 @@ const getLocalTodos = () => {
             deleteBtn.classList.add('btn', 'deleteBtn')
             li.appendChild(deleteBtn);
 
+            //Creating Done btn
+            const doneBtn = document.createElement('button');
+            doneBtn.innerText = 'Done';
+            doneBtn.classList.add('btn', 'doneBtn')
+            li.appendChild(doneBtn);
             todoList.appendChild(li);
         });
     }
